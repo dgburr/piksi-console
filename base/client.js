@@ -3,7 +3,7 @@ var wso = require('./ws-obj');
 var WS = require('ws');
 
 var init = function(port) {
-  var ws = new WS('ws://' + document.domain + ':' + port + '/');
+  var ws = new WebSocket('ws://' + document.domain + ':' + port + '/');
   // Receive messages from server
   var input = wso.wrap_input(ws);
   // Send stuff back

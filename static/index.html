@@ -10,16 +10,123 @@
     <div id="map"></div>
     <script type="text/javascript">
 var map;
+
+function CenterControl(controlDiv, map) {
+
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '2px solid #fff';
+  controlUI.style.borderRadius = '3px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.marginBottom = '22px';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to recenter the map';
+  controlDiv.appendChild(controlUI);
+
+  // creating checkbox element
+  var checkbox = document.createElement('input');
+  // Assigning the attributes
+  // to created checkbox
+  checkbox.type = "checkbox";
+  checkbox.name = "name";
+  checkbox.value = "value";
+  checkbox.id = "span_checkbox";
+  checkbox.checked = true;
+  controlUI.appendChild(checkbox);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = '16px';
+  controlText.style.lineHeight = '38px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.innerHTML = 'Center Map';
+  controlUI.appendChild(controlText);
+
+}
+
 function initMap() {
   map = window.map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -34.397, lng: 150.644},
-    zoom: 8
+    center: {lat: 37.770783, lng: -122.402945},
+    zoom: 16,
   });
+
+  var centerControlDiv = document.createElement('div');
+  var centerControl = new CenterControl(centerControlDiv, map);
+
+  centerControlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
+  var legend = document.createElement('div');
+  legend.id = "legend";
+  legend.style.fontFamily = 'Arial, sans-serif';
+  legend.style.fontSize = '20px';
+  legend.style.background = '#fff';
+  legend.style.padding = '10px';
+  legend.style.margin = '10px';
+  legend.style.border = '3px solid #000';
+
+  var nsats = document.createElement('div');
+  nsats.id = "nsats"
+  legend.appendChild(nsats);
+
+  var fix = document.createElement('div');
+  fix.id = "fix"
+  legend.appendChild(fix);
+
+  var age = document.createElement('div');
+  age.id = "age"
+  legend.appendChild(age);
+
+  var h_acc = document.createElement('div');
+  h_acc.id = "h_acc"
+  legend.appendChild(h_acc);
+
+  var speed = document.createElement('div');
+  speed.id = "speed"
+  legend.appendChild(speed);
+
+  var speed_acc = document.createElement('div');
+  speed_acc.id = "speed_acc"
+  legend.appendChild(speed_acc);
+
+  map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
+
+  var fixModes = ['Invalid',
+                  'Single Point Position (SPP)',
+                  'Differential GNSS (DGNSS)',
+                  'Float RTK',
+                  'Fixed RTK',
+                  'Dead Reckoning',
+                  'SBAS Position'];
+  var fix_colors = ['#808080', '#ff0000', '#0000ff', '#e67e22', '#008000', '#000000', '#ff00ff'];
+
+  var fix_legend = document.createElement('div');
+  fix_legend.id = "fix_legend";
+  fix_legend.style.fontFamily = 'Arial, sans-serif';
+  fix_legend.style.fontSize = '14px';
+  fix_legend.style.color = 'white'
+  fix_legend.style.background = '#fff';
+  fix_legend.style.padding = '10px';
+  fix_legend.style.margin = '10px';
+  fix_legend.style.border = '3px solid #000';
+  for (var fix in fixModes) {
+    var div = document.createElement('div');
+    div.innerHTML = fixModes[fix];
+    div.style.background = fix_colors[fix]
+    fix_legend.appendChild(div);
+  }
+
+  map.controls[google.maps.ControlPosition.RIGHT_TOP].push(fix_legend);
 }
 
     </script>
     <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAY2zlhiSt1cwLyxww63Popm0x9RrRGuEw&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap">
     </script>
     <script async defer src="bundle.js"></script>
   </body>

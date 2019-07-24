@@ -2,8 +2,7 @@ var _ = require('underscore');
 var repl = require('repl');
 
 var binary = require('binary');
-var serialport = require('serialport');
-var SerialPort = require('serialport').SerialPort
+var SerialPort = require('serialport');
 var libsbp = require('libsbp');
 var dispatcher = libsbp.dispatch;
 
@@ -14,7 +13,7 @@ var mkConnection = function(serial) {
 
   var piksi = new SerialPort(serial, {
     //baudrate: 115200 // serial or uart
-    baudrate: 1000000 // USB
+    baudRate: 1000000 // USB
   });
 
   piksi.on('open', function() {
@@ -23,7 +22,7 @@ var mkConnection = function(serial) {
 
     dispatcher(piksi, function (err, framedMessage) {
       // MSG_POS_LLH
-      if (0x0201 === framedMessage.sbp.msg_type) {
+      if (0x020A === framedMessage.sbp.msg_type) {
         piksiObj.handle({
           tag: 'pos_llh',
           point: { lat: framedMessage.fields.lat, lng: framedMessage.fields.lon }, // east/north
